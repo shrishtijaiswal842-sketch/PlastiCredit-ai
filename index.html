@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlastiCredit AI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#07130f;color:#f2fff7}
+header{padding:22px;background:#10251b;border-bottom:1px solid #294b38}
+header h1{margin:0;color:#64ed9b;font-size:25px}
+header p{color:#b4c9ba;margin-bottom:0}
+main{max-width:900px;margin:auto;padding:18px}
+.card{background:#10251b;border:1px solid #294b38;border-radius:16px;padding:18px;margin-bottom:16px}
+h2{font-size:19px;margin-top:0}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.stat{background:#193629;padding:16px;border-radius:12px}
+.stat strong{display:block;font-size:25px;color:#64ed9b;margin-top:8px}
+label{display:block;margin:13px 0 7px}
+input,select,button{width:100%;padding:13px;border-radius:9px;border:1px solid #42644f;background:#0b1c13;color:white;font-size:15px}
+button{background:#35c875;color:#052012;font-weight:bold;border:0;margin-top:14px;cursor:pointer}
+button:disabled{opacity:.5}
+.small{color:#a9c1b0;font-size:13px}
+#preview{max-width:100%;max-height:190px;display:none;margin-top:12px;border-radius:10px}
+.entry{padding:12px 0;border-bottom:1px solid #294b38}
+.pill{color:#64ed9b}
+footer{text-align:center;color:#8da898;padding:25px;font-size:12px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>♻ PlastiCredit AI</h1>
+<p>Turning plastic waste into measurable value.</p>
+</header>
+
+<main>
+
+<section class="card">
+<h2>Impact Dashboard</h2>
+<div class="stats">
+<div class="stat">Plastic submitted<strong id="total">0 kg</strong></div>
+<div class="stat">Reward points<strong id="points">0</strong></div>
+<div class="stat">Submissions<strong id="count">0</strong></div>
+<div class="stat">Platform status<strong style="font-size:17px">Demo</strong></div>
+</div>
+<p class="small">Demo figures are stored in this browser only.</p>
+</section>
+
+<section class="card">
+<h2>Submit Plastic Waste</h2>
+
+<label for="photo">Upload plastic photograph</label>
+<input type="file" id="photo" accept="image/*">
+<img id="preview" alt="Selected plastic photograph">
+
+<label for="type">Plastic category</label>
+<select id="type">
+<option value="PET">PET</option>
+<option value="HDPE">HDPE</option>
+<option value="LDPE">LDPE</option>
+<option value="PP">PP</option>
+<option value="Other">Other / Unknown</option>
+</select>
+
+<label for="weight">Estimated weight (kg)</label>
+<input type="number" id="weight" min="0.01" max="100" step="0.01" placeholder="Example: 2.5">
+
+<button id="submit">Submit for demo verification</button>
+<p class="small" id="message">Upload a photograph and enter the estimated weight.</p>
+</section>
+
+<section class="card">
+<h2>Submission History</h2>
+<div id="history">No submissions yet.</div>
+</section>
+
+<section class="card">
+<h2>Our Mission</h2>
+<p>PlastiCredit AI explores how digital verification, image records and transparent reward tracking can encourage responsible plastic collection and recycling.</p>
+<p class="small">This prototype does not yet perform AI image recognition, independently verify waste, or issue real carbon credits or money.</p>
+</section>
+
+</main>
+
+<footer>PlastiCredit AI · Prototype Edition</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+let records = [];
+let hashes = new Set();
+
+$("photo").addEventListener("change", () => {
+ const file = $("photo").files[0];
+ if (!file) return;
+ if (!file.type.startsWith("image/")) {
+  $("message").textContent = "Please select an image.";
+  return;
+ }
+ const reader = new FileReader();
+ reader.onload = e => {
+  $("preview").src = e.target.result;
+  $("preview").style.display = "block";
+ };
+ reader.readAsDataURL(file);
+});
+
+function updateDashboard(){
+ $("total").textContent =
+ records.reduce((sum,r)=>sum+r.weight,0).toFixed(2)+" kg";
+ $("points").textContent =
+ records.reduce((sum,r)=>sum+r.points,0);
+ $("count").textContent = records.length;
+ $("history").innerHTML = records.length
+ ? records.slice().reverse().map(r =>
+ `<div class="entry">
+ <b>${r.type}</b> · ${r.weight} kg
+ <br><span class="small">${r.date} · Demo points: ${r.points}</span>
+ </div>`).join("")
+ : "No submissions yet.";
+}
+
+$("submit").addEventListener("click", async () => {
+ const file = $("photo").files[0];
+ const weight = Number($("weight").value);
+ const type = $("type").value;
+
+ if (!file) {
+  $("message").textContent = "Please upload a photograph first.";
+  return;
+ }
+ if (!Number.isFinite(weight) || weight <= 0 || weight > 100) {
+  $("message").textContent = "Enter a valid weight between 0.01 and 100 kg.";
+  return;
+ }
+
+ const button = $("submit");
+ button.disabled = true;
+ $("message").textContent = "Checking image record...";
+
+ try {
+  if (!crypto.subtle) throw new Error("Secure browser required");
+  const bytes = await file.arrayBuffer();
+  const digest = await crypto.subtle.digest("SHA-256",bytes);
+  const hash = Array.from(new Uint8Array(digest))
+    .map(b=>b.toString(16).padStart(2,"0")).join("");
+
+  if (hashes.has(hash)) {
+   $("message").textContent = "Duplicate image detected in this browser demo.";
+   return;
+  }
+
+  hashes.add(hash);
+  const points = Math.round(weight * 10);
+  records.push({
+   type,weight,points,
+   date:new Date().toLocaleString()
+  });
+  updateDashboard();
+  $("message").textContent =
+   "Demo submission recorded! No real-world verification has occurred.";
+  $("weight").value = "";
+  $("photo").value = "";
+  $("preview").style.display = "none";
+
+ } catch(error) {
+  $("message").textContent =
+   "Image checking is unavailable in this browser. Try a secure browser.";
+ } finally {
+  button.disabled = false;
+ }
+});
+</script>
+
+</body>
+</html>
