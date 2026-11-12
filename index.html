@@ -3,175 +3,455 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PlastiCredit AI</title>
+<meta name="theme-color" content="#f7faf7">
+<title>PlastiCredit AI | Make Every Bottle Count</title>
+
 <style>
+:root {
+  --green:#16845b;
+  --dark:#12382b;
+  --mint:#e9f5ee;
+  --ink:#172d26;
+  --muted:#718078;
+  --bg:#f7faf7;
+  --white:#fff;
+  --line:#e5ece7;
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#07130f;color:#f2fff7}
-header{padding:22px;background:#10251b;border-bottom:1px solid #294b38}
-header h1{margin:0;color:#64ed9b;font-size:25px}
-header p{color:#b4c9ba;margin-bottom:0}
-main{max-width:900px;margin:auto;padding:18px}
-.card{background:#10251b;border:1px solid #294b38;border-radius:16px;padding:18px;margin-bottom:16px}
-h2{font-size:19px;margin-top:0}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.stat{background:#193629;padding:16px;border-radius:12px}
-.stat strong{display:block;font-size:25px;color:#64ed9b;margin-top:8px}
-label{display:block;margin:13px 0 7px}
-input,select,button{width:100%;padding:13px;border-radius:9px;border:1px solid #42644f;background:#0b1c13;color:white;font-size:15px}
-button{background:#35c875;color:#052012;font-weight:bold;border:0;margin-top:14px;cursor:pointer}
-button:disabled{opacity:.5}
-.small{color:#a9c1b0;font-size:13px}
-#preview{max-width:100%;max-height:190px;display:none;margin-top:12px;border-radius:10px}
-.entry{padding:12px 0;border-bottom:1px solid #294b38}
-.pill{color:#64ed9b}
-footer{text-align:center;color:#8da898;padding:25px;font-size:12px}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Inter,Arial,sans-serif;
+}
+button,input,select{font:inherit}
+header{
+  height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 7%;
+  background:rgba(255,255,255,.94);
+  border-bottom:1px solid var(--line);
+}
+.logo{font-size:21px;font-weight:800;letter-spacing:-.8px}
+.logo span{color:var(--green)}
+.nav{display:flex;align-items:center;gap:25px}
+.nav a{
+  text-decoration:none;color:#56665e;font-size:13px;font-weight:600
+}
+.nav .nav-btn{
+  background:var(--dark);color:white;padding:12px 18px;border-radius:9px
+}
+main{max-width:1160px;margin:auto;padding:36px 22px 70px}
+.hero{
+  background:#edf5ef;
+  border:1px solid #e1ece3;
+  border-radius:26px;
+  padding:55px 5%;
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  align-items:center;
+  gap:20px;
+  overflow:hidden;
+}
+.eyebrow{
+  color:var(--green);font-size:11px;font-weight:800;
+  letter-spacing:2px;text-transform:uppercase
+}
+h1{
+  font-size:clamp(36px,5vw,58px);
+  line-height:1.08;letter-spacing:-2px;
+  margin:18px 0;color:var(--dark)
+}
+h1 span{color:var(--green)}
+.hero p{
+  color:#64756b;line-height:1.8;
+  font-size:15px;max-width:490px
+}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{
+  padding:14px 21px;border-radius:10px;
+  border:0;font-weight:700;cursor:pointer;
+  text-decoration:none;display:inline-block
+}
+.btn-primary{background:var(--green);color:white}
+.btn-light{background:white;color:var(--dark);border:1px solid var(--line)}
+.hero-art{
+  display:flex;justify-content:center;align-items:center;
+  min-height:260px;position:relative
+}
+.globe{
+  width:min(270px,75vw);aspect-ratio:1;
+  border-radius:50%;position:relative;overflow:hidden;
+  background:
+    radial-gradient(ellipse at 28% 22%,#a5d9f2 0,#4b9dc8 28%,#176c9e 68%,#083f69 100%);
+  box-shadow:inset -23px -16px 35px #032c4d88,
+             inset 8px 7px 20px #ffffff66,
+             0 22px 45px #174d3940;
+  animation:float 6s ease-in-out infinite;
+}
+.continents{
+  position:absolute;inset:0;width:100%;height:100%;
+  filter:drop-shadow(1px 2px 2px #164c3977)
+}
+.clouds{
+  position:absolute;inset:0;border-radius:50%;
+  background:linear-gradient(115deg,transparent 35%,#ffffff30 49%,transparent 63%);
+  mix-blend-mode:screen
+}
+.globe-ring{
+  position:absolute;width:125%;height:35%;
+  border:2px solid #16845b88;border-radius:50%;
+  transform:rotate(-22deg);
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+.globe-label{
+  position:absolute;bottom:0;right:0;
+  background:white;padding:11px 15px;
+  border-radius:12px;box-shadow:0 8px 25px #153d2920;
+  font-size:12px;font-weight:700;color:var(--dark)
+}
+.section-heading{
+  display:flex;justify-content:space-between;
+  align-items:end;gap:15px;margin:38px 0 17px
+}
+.section-heading h2{margin:0;font-size:23px;color:var(--dark)}
+.section-heading p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:15px
+}
+.stat{
+  background:white;border:1px solid var(--line);
+  padding:21px;border-radius:16px
+}
+.stat-label{font-size:12px;color:var(--muted);font-weight:600}
+.stat-value{font-size:29px;font-weight:800;margin-top:12px;color:var(--dark)}
+.stat-icon{
+  width:35px;height:35px;border-radius:10px;
+  display:grid;place-items:center;background:var(--mint);
+  color:var(--green);margin-bottom:14px;font-size:18px
+}
+.layout{
+  display:grid;grid-template-columns:1fr .9fr;
+  gap:18px;margin-top:20px
+}
+.card{
+  background:white;border:1px solid var(--line);
+  border-radius:18px;padding:24px
+}
+.card h2{font-size:19px;margin:9px 0;color:var(--dark)}
+.card p{color:var(--muted);font-size:13px;line-height:1.6}
+label{
+  display:block;margin:17px 0 8px;
+  font-size:12px;font-weight:700;color:#43564b
+}
+input,select{
+  width:100%;padding:13px 14px;
+  border:1px solid #dce6df;border-radius:9px;
+  background:#fbfdfb;color:var(--ink);outline:none
+}
+input:focus,select:focus{border-color:var(--green)}
+.preview{
+  width:100%;max-height:180px;object-fit:cover;
+  border-radius:10px;margin-top:12px;display:none
+}
+.full{width:100%;margin-top:20px}
+.history-item{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:15px 0;border-bottom:1px solid var(--line);
+  font-size:13px
+}
+.history-item span{color:var(--muted);font-size:11px}
+.empty{padding:20px 0;color:var(--muted);font-size:13px}
+.mission{
+  margin-top:20px;background:var(--dark);
+  color:white;border-radius:18px;padding:28px
+}
+.mission h2{font-size:23px;margin:10px 0}
+.mission p{color:#c3d8cc;line-height:1.7;font-size:13px;max-width:700px}
+.notice{font-size:11px!important;color:#9a7a3c!important}
+footer{text-align:center;padding:28px;color:var(--muted);font-size:12px}
+@media(max-width:720px){
+  header{padding:0 18px;height:68px}
+  .nav{gap:10px}
+  .nav a:not(.nav-btn){display:none}
+  main{padding:20px 14px 45px}
+  .hero{grid-template-columns:1fr;padding:32px 23px}
+  .hero-art{min-height:210px}
+  .globe{width:190px}
+  .stats{gap:8px}
+  .stat{padding:13px}
+  .stat-value{font-size:21px}
+  .stat-icon{width:29px;height:29px}
+  .layout{grid-template-columns:1fr}
+  .section-heading h2{font-size:20px}
+}
 </style>
 </head>
-<body>
 
+<body>
 <header>
-<h1>♻ PlastiCredit AI</h1>
-<p>Turning plastic waste into measurable value.</p>
+  <div class="logo">PlastiCredit <span>AI.</span></div>
+  <nav class="nav">
+    <a href="#about">Our mission</a>
+    <a href="#dashboard">Dashboard</a>
+    <a class="nav-btn" href="#collection">Get started</a>
+  </nav>
 </header>
 
 <main>
+<section class="hero" id="about">
+  <div>
+    <div class="eyebrow">A smarter way to recycle</div>
+    <h1>Small actions.<br><span>Big impact.</span></h1>
+    <p>
+      Give plastic a second life. PlastiCredit AI is building a smarter
+      recycling experience that connects plastic collection,
+      digital tracking and meaningful rewards.
+    </p>
+    <div class="actions">
+      <a href="#collection" class="btn btn-primary">Start recycling →</a>
+      <a href="#mission" class="btn btn-light">Discover our mission</a>
+    </div>
+  </div>
 
-<section class="card">
-<h2>Impact Dashboard</h2>
-<div class="stats">
-<div class="stat">Plastic submitted<strong id="total">0 kg</strong></div>
-<div class="stat">Reward points<strong id="points">0</strong></div>
-<div class="stat">Submissions<strong id="count">0</strong></div>
-<div class="stat">Platform status<strong style="font-size:17px">Demo</strong></div>
+  <div class="hero-art">
+    <div class="globe-ring"></div>
+    <div class="globe">
+      <svg class="continents" viewBox="0 0 300 300" aria-label="Illustration of Earth">
+        <defs>
+          <linearGradient id="land" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#a6d58c"/>
+            <stop offset="1" stop-color="#398b59"/>
+          </linearGradient>
+        </defs>
+        <g fill="url(#land)">
+          <path d="M56 67 L79 45 104 43 119 57 143 55 154 75 143 93 123 99 115 122 96 131 82 117 65 112 52 91Z"/>
+          <path d="M115 132 L138 126 155 144 150 169 138 193 130 224 115 246 105 221 108 195 97 169Z"/>
+          <path d="M169 61 L190 49 212 55 230 70 250 72 261 93 243 110 219 106 208 123 187 113 170 96Z"/>
+          <path d="M176 126 L197 115 224 125 240 146 230 174 211 192 202 220 184 231 171 208 166 179 151 153Z"/>
+          <path d="M239 219 L253 215 265 226 260 244 244 248 232 237Z"/>
+          <path d="M145 45 L157 35 169 42 163 55Z"/>
+        </g>
+        <path d="M35 150 Q150 110 265 150" fill="none" stroke="#ffffff" stroke-opacity=".22" stroke-width="1.5"/>
+        <path d="M150 15 Q190 150 150 285" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="1.5"/>
+      </svg>
+      <div class="clouds"></div>
+    </div>
+    <div class="globe-label">🌍 One planet. One responsibility.</div>
+  </div>
+</section>
+
+<div class="section-heading" id="dashboard">
+  <div>
+    <h2>Your impact dashboard</h2>
+    <p>Track your demo collection activity.</p>
+  </div>
 </div>
-<p class="small">Demo figures are stored in this browser only.</p>
+
+<section class="stats">
+  <div class="stat">
+    <div class="stat-icon">♻</div>
+    <div class="stat-label">Submissions</div>
+    <div class="stat-value" id="total">0</div>
+  </div>
+  <div class="stat">
+    <div class="stat-icon">⚖</div>
+    <div class="stat-label">Plastic collected</div>
+    <div class="stat-value" id="weightTotal">0 kg</div>
+  </div>
+  <div class="stat">
+    <div class="stat-icon">✦</div>
+    <div class="stat-label">Demo reward points</div>
+    <div class="stat-value" id="pointsTotal">0</div>
+  </div>
 </section>
 
-<section class="card">
-<h2>Submit Plastic Waste</h2>
+<div class="layout">
+  <section class="card" id="collection">
+    <div class="eyebrow">Collection portal</div>
+    <h2>Make your first submission</h2>
+    <p>Upload a photo and share the details of your plastic collection.</p>
 
-<label for="photo">Upload plastic photograph</label>
-<input type="file" id="photo" accept="image/*">
-<img id="preview" alt="Selected plastic photograph">
+    <label for="photo">Upload plastic photo</label>
+    <input type="file" id="photo" accept="image/*">
+    <img id="preview" class="preview" alt="Uploaded plastic preview">
 
-<label for="type">Plastic category</label>
-<select id="type">
-<option value="PET">PET</option>
-<option value="HDPE">HDPE</option>
-<option value="LDPE">LDPE</option>
-<option value="PP">PP</option>
-<option value="Other">Other / Unknown</option>
-</select>
+    <label for="category">Plastic category</label>
+    <select id="category">
+      <option value="PET">PET</option>
+      <option value="HDPE">HDPE</option>
+      <option value="LDPE">LDPE</option>
+      <option value="PP">PP</option>
+      <option value="Other">Other / Unknown</option>
+    </select>
 
-<label for="weight">Estimated weight (kg)</label>
-<input type="number" id="weight" min="0.01" max="100" step="0.01" placeholder="Example: 2.5">
+    <label for="weight">Collected weight (kg)</label>
+    <input type="number" id="weight" min="0.01" step="0.01" placeholder="e.g. 2.5">
 
-<button id="submit">Submit for demo verification</button>
-<p class="small" id="message">Upload a photograph and enter the estimated weight.</p>
+    <button class="btn btn-primary full" id="submitBtn" onclick="submitCollection()">
+      Submit collection →
+    </button>
+    <p class="notice">
+      Prototype note: reward points are illustrative, not money or verified carbon credits.
+    </p>
+  </section>
+
+  <section class="card">
+    <div class="eyebrow">Your activity</div>
+    <h2>Recent collections</h2>
+    <p>Your submissions saved in this browser.</p>
+    <div id="history"><div class="empty">Your activity will appear here.</div></div>
+    <button class="btn btn-light" onclick="clearHistory()">Clear demo history</button>
+  </section>
+</div>
+
+<section class="mission" id="mission">
+  <div class="eyebrow" style="color:#8ee0b6">WHY WE EXIST</div>
+  <h2>Recycling should feel rewarding.</h2>
+  <p>
+    Our vision is to make plastic collection easier to track and more
+    transparent. Future development aims to explore image-based verification,
+    duplicate-submission prevention, collection-centre coordination and
+    digital reward systems.
+  </p>
 </section>
-
-<section class="card">
-<h2>Submission History</h2>
-<div id="history">No submissions yet.</div>
-</section>
-
-<section class="card">
-<h2>Our Mission</h2>
-<p>PlastiCredit AI explores how digital verification, image records and transparent reward tracking can encourage responsible plastic collection and recycling.</p>
-<p class="small">This prototype does not yet perform AI image recognition, independently verify waste, or issue real carbon credits or money.</p>
-</section>
-
 </main>
 
-<footer>PlastiCredit AI · Prototype Edition</footer>
+<footer>
+  © 2026 PlastiCredit AI · Building a more circular future.
+  <br><br>
+  Concept prototype. No real recycling verification, payments or carbon credits are issued.
+</footer>
 
 <script>
-const $ = id => document.getElementById(id);
-let records = [];
-let hashes = new Set();
+const photoInput=document.getElementById("photo");
+const preview=document.getElementById("preview");
+let selectedHash="";
 
-$("photo").addEventListener("change", () => {
- const file = $("photo").files[0];
- if (!file) return;
- if (!file.type.startsWith("image/")) {
-  $("message").textContent = "Please select an image.";
-  return;
- }
- const reader = new FileReader();
- reader.onload = e => {
-  $("preview").src = e.target.result;
-  $("preview").style.display = "block";
- };
- reader.readAsDataURL(file);
+photoInput.addEventListener("change",async function(){
+  const file=this.files[0];
+  selectedHash="";
+  if(!file){preview.style.display="none";return;}
+  if(!file.type.startsWith("image/")){
+    alert("Please select an image.");
+    this.value="";
+    return;
+  }
+  preview.src=URL.createObjectURL(file);
+  preview.style.display="block";
+  try{
+    const buffer=await file.arrayBuffer();
+    const digest=await crypto.subtle.digest("SHA-256",buffer);
+    selectedHash=Array.from(new Uint8Array(digest))
+      .map(b=>b.toString(16).padStart(2,"0")).join("");
+  }catch(e){
+    alert("Please open the website through HTTPS to process the image.");
+  }
 });
 
-function updateDashboard(){
- $("total").textContent =
- records.reduce((sum,r)=>sum+r.weight,0).toFixed(2)+" kg";
- $("points").textContent =
- records.reduce((sum,r)=>sum+r.points,0);
- $("count").textContent = records.length;
- $("history").innerHTML = records.length
- ? records.slice().reverse().map(r =>
- `<div class="entry">
- <b>${r.type}</b> · ${r.weight} kg
- <br><span class="small">${r.date} · Demo points: ${r.points}</span>
- </div>`).join("")
- : "No submissions yet.";
+function getRecords(){
+  try{return JSON.parse(localStorage.getItem("pc_records")||"[]");}
+  catch(e){return [];}
 }
 
-$("submit").addEventListener("click", async () => {
- const file = $("photo").files[0];
- const weight = Number($("weight").value);
- const type = $("type").value;
+function safe(value){
+  return String(value).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
 
- if (!file) {
-  $("message").textContent = "Please upload a photograph first.";
-  return;
- }
- if (!Number.isFinite(weight) || weight <= 0 || weight > 100) {
-  $("message").textContent = "Enter a valid weight between 0.01 and 100 kg.";
-  return;
- }
+async function submitCollection(){
+  const file=photoInput.files[0];
+  const weight=Number(document.getElementById("weight").value);
+  const category=document.getElementById("category").value;
+  const button=document.getElementById("submitBtn");
 
- const button = $("submit");
- button.disabled = true;
- $("message").textContent = "Checking image record...";
-
- try {
-  if (!crypto.subtle) throw new Error("Secure browser required");
-  const bytes = await file.arrayBuffer();
-  const digest = await crypto.subtle.digest("SHA-256",bytes);
-  const hash = Array.from(new Uint8Array(digest))
-    .map(b=>b.toString(16).padStart(2,"0")).join("");
-
-  if (hashes.has(hash)) {
-   $("message").textContent = "Duplicate image detected in this browser demo.";
-   return;
+  if(!file){alert("Please upload a photo.");return;}
+  if(!Number.isFinite(weight)||weight<=0){
+    alert("Enter a valid weight.");return;
+  }
+  if(!selectedHash){
+    alert("Wait for the image to finish processing.");return;
   }
 
-  hashes.add(hash);
-  const points = Math.round(weight * 10);
-  records.push({
-   type,weight,points,
-   date:new Date().toLocaleString()
+  const records=getRecords();
+  if(records.some(r=>r.hash===selectedHash)){
+    alert("This exact image has already been submitted in this browser.");
+    return;
+  }
+
+  const points=Math.round(weight*10);
+  records.unshift({
+    hash:selectedHash,
+    category:category,
+    weight:weight,
+    points:points,
+    date:new Date().toLocaleString()
   });
-  updateDashboard();
-  $("message").textContent =
-   "Demo submission recorded! No real-world verification has occurred.";
-  $("weight").value = "";
-  $("photo").value = "";
-  $("preview").style.display = "none";
 
- } catch(error) {
-  $("message").textContent =
-   "Image checking is unavailable in this browser. Try a secure browser.";
- } finally {
-  button.disabled = false;
- }
-});
+  try{
+    localStorage.setItem("pc_records",JSON.stringify(records));
+  }catch(e){
+    alert("Browser storage is full. Clear some demo records.");
+    return;
+  }
+
+  button.disabled=true;
+  button.textContent="Submitted ✓";
+  document.getElementById("weight").value="";
+  photoInput.value="";
+  preview.style.display="none";
+  selectedHash="";
+  render();
+
+  setTimeout(()=>{
+    button.disabled=false;
+    button.textContent="Submit collection →";
+  },1200);
+
+  alert("Demo submission saved successfully!");
+}
+
+function render(){
+  const records=getRecords();
+  const weight=records.reduce((s,r)=>s+Number(r.weight),0);
+  const points=records.reduce((s,r)=>s+Number(r.points),0);
+
+  document.getElementById("total").textContent=records.length;
+  document.getElementById("weightTotal").textContent=weight.toFixed(2)+" kg";
+  document.getElementById("pointsTotal").textContent=points;
+
+  const history=document.getElementById("history");
+  if(!records.length){
+    history.innerHTML='<div class="empty">Your activity will appear here.</div>';
+    return;
+  }
+
+  history.innerHTML=records.map(r=>`
+    <div class="history-item">
+      <div><strong>${safe(r.category)}</strong><br><span>${safe(r.date)}</span></div>
+      <div style="text-align:right">
+        <strong>${Number(r.weight).toFixed(2)} kg</strong><br>
+        <span>+${Number(r.points)} demo points</span>
+      </div>
+    </div>
+  `).join("");
+}
+
+function clearHistory(){
+  if(confirm("Clear all demo submissions?")){
+    localStorage.removeItem("pc_records");
+    render();
+  }
+}
+
+render();
 </script>
-
-
 </body>
 </html>
